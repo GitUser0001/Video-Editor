@@ -5,4 +5,4 @@
 
 **Author:** *Danylo Shcherbak, IT-32*
 
-[<image src="https://ci.appveyor.com/api/projects/status/3cx7yxfbwpw9qnch?retina=true" width="200">](https://ci.appveyor.com/project/GitUser0001/video-editor)
+[<image src="https://ci.appveyor.com/api/projects/status/jkaqbv629nlwjk49?retina=true" width="200">](https://ci.appveyor.com/project/GitUser0001/video-editor)
