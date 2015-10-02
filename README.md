@@ -1,2 +1,8 @@
 # Video-Editor
-ПО для составления видео-коллажей из нескольких видео-, аудио- и фото-источников.
+
+#### Видео-редактор (singleton, chain-of-responsibility, memento, mediator, flyweight)  
+ПО для составления видео-коллажей из нескольких видео-, аудио- и фото-источников, аналогично приложениям Sony Vegas, Pinnacle Studio и Adobe Premiere. Реализовать возможность выделение фрагмента видео-/аудио-файла и вставку его в результирующую дорожку, реализация простейших эффектов (вставка фото на длительность, смена кадра путем сползания предыдущего направо или сменой яркости).
+
+**Author:** *Danylo Shcherbak, IT-32*
+
+[<image src="https://ci.appveyor.com/api/projects/status/3cx7yxfbwpw9qnch?retina=true" width="200">](https://ci.appveyor.com/project/GitUser0001/video-editor)
