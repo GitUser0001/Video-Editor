@@ -155,3 +155,6 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 /Sourse/VideoEditor/packages
+/External/res.txt
+/External/SharedAssemblyInfo.txt
+/External/Change Assembly info OLD.ps1
