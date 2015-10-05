@@ -10,18 +10,23 @@ namespace VideoEditor
     {
         private static Settings _instance;
 
-        private Settings();
+        private Settings()
+        {
+        }
+
+        public int FontSize
+        {
+            get;
+            set;
+        }
 
         public static Settings GetInstance()
         {
             if (_instance == null)
             {
-                lock (typeof(Settings))
+                if (_instance == null)
                 {
-                    if (_instance == null)
-                    {
-                        _instance = new Settings();
-                    }
+                    _instance = new Settings();
                 }
             }
 
