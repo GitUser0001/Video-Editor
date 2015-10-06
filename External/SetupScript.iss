@@ -6,7 +6,7 @@
 #define MyAppExeName "VideoEditor.exe"
 
 
-
+#define InstallDir "..\Installer\"
 #define Dir "..\Bin\VideoEditor\Debug"
 #define Path "..\Bin\VideoEditor\Debug\VideoEditor.exe"
 #define PathToNet "D:\GitHub\InstallationScripts\"
@@ -33,7 +33,7 @@ VersionInfoVersion={#AppVersion}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-OutputDir=C:\Users\Dan\Desktop\Temp
+OutputDir={#InstallDir}
 OutputBaseFilename=Video-Editor Setup
 Compression=lzma
 SolidCompression=yes
