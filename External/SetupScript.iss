@@ -7,8 +7,8 @@
 
 
 
-#define Dir "..\Bin\VideoEditor\Release"
-#define Path "..\Bin\VideoEditor\Release\VideoEditor.exe"
+#define Dir "..\Bin\VideoEditor\Debug"
+#define Path "..\Bin\VideoEditor\Debug\VideoEditor.exe"
 #define PathToNet "D:\GitHub\InstallationScripts\"
 #define Name GetStringFileInfo(Path, "ProductName")
 #define Publisher GetStringFileInfo(Path, "CompanyName")
