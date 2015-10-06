@@ -26,16 +26,17 @@
 AppId={{2898BFE2-7402-4E43-9744-E5A220EF34BA}
 AppName={#MyAppName}
 AppVersion={#AppVersion}
+VersionInfoVersion={#AppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-OutputDir=C:\Users\STDY\Desktop\Temp
+OutputDir=C:\Users\Dan\Desktop\Temp
 OutputBaseFilename=Video-Editor Setup
 Compression=lzma
 SolidCompression=yes
-AppName={#Name}
-AppVersion={#AppVersion}
+;AppName={#Name}
+;AppVersion={#AppVersion}
 AppPublisher={#Publisher}
 AppPublisherURL={#URL}
 AppSupportURL={#URL}
@@ -51,7 +52,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "C:\Users\STDY\Source\Repos\Video-Editor\Bin\VideoEditor\VideoEditor.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Dan\Source\Repos\Video-Editor\Bin\VideoEditor\Release\VideoEditor.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
