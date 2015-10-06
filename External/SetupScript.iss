@@ -18,7 +18,6 @@
 #define GUID "F829E35A-E5AB-4ACB-8A32-3DA72881CBBF"
 
 
-
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
@@ -26,7 +25,10 @@
 AppId={{2898BFE2-7402-4E43-9744-E5A220EF34BA}
 AppName={#MyAppName}
 AppVersion={#AppVersion}
+
+AppVerName={#MyAppName} {#AppVersion}
 VersionInfoVersion={#AppVersion}
+
 ;AppVerName={#MyAppName} {#MyAppVersion}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
