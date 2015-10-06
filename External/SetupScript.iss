@@ -26,6 +26,7 @@
 AppId={{2898BFE2-7402-4E43-9744-E5A220EF34BA}
 AppName={#MyAppName}
 AppVersion={#AppVersion}
+AppVerName={#AppVersion}
 VersionInfoVersion={#AppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 DefaultDirName={pf}\{#MyAppName}
