@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace VideoEditor
 {
-    public class Settings
+    [DataContract]
+    public class Settings : IDisposable
     {
+        private static readonly object _lock = new object();
         private static Settings _instance;
 
         private Settings()
@@ -24,13 +28,20 @@ namespace VideoEditor
         {
             if (_instance == null)
             {
-                if (_instance == null)
+                lock (_lock)
                 {
-                    _instance = new Settings();
+                    if (_instance == null)
+                    {
+                        _instance = new Settings();
+                    }
                 }
             }
 
             return _instance;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
