@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,13 @@ namespace VideoEditor
         public MainWindow()
         {
             InitializeComponent();
+            Settings.GetInstance();
+            MessageBox.Show(Settings.GetInstance().FontSize.ToString());
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Settings.GetInstance().Dispose();
         }
     }
 }
