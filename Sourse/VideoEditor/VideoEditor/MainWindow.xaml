@@ -8,6 +8,7 @@
             <ColumnDefinition Width="28*"/>
             <ColumnDefinition Width="132*"/>
         </Grid.ColumnDefinitions>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="343,146,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
 
     </Grid>
 </Window>

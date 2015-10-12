@@ -67,9 +67,11 @@ namespace VideoEditor
             {
                 if (disposing)
                 {
-                    XmlSerializer xs = new XmlSerializer(typeof(Settings));
-                    TextWriter tw = new StreamWriter(@"settings.xml");
-                    xs.Serialize(tw, this);
+                    using (var tw = new StreamWriter(@"settings.xml"))
+                    {
+                        XmlSerializer xs = new XmlSerializer(typeof(Settings));
+                        xs.Serialize(tw, this);
+                    }
 
                     FontSize = 0;
                 }

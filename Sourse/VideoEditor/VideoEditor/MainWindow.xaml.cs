@@ -25,12 +25,17 @@ namespace VideoEditor
         {
             InitializeComponent();
             Settings.GetInstance();
-            MessageBox.Show(Settings.GetInstance().FontSize.ToString());
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Settings.GetInstance().Dispose();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //int f = Settings.GetInstance().FontSize;
+            //MessageBox.Show(String.Format("{0}", f));
         }
     }
 }
