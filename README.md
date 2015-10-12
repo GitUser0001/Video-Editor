@@ -6,5 +6,5 @@
 **Author:** *Danylo Shcherbak, IT-32*
 
 [<image src="https://ci.appveyor.com/api/projects/status/jkaqbv629nlwjk49?retina=true" width="200">](https://ci.appveyor.com/project/GitUser0001/video-editor)
-[<image src="https://badge.fury.io/nu/Video-Editor@2x.png" width="215">](https://badge.fury.io/nu/Video-Editor)
-[<image src="https://badge.fury.io/gh/GitUser0001%2FVideo-Editor@2x.png" width="155">](https://badge.fury.io/gh/GitUser0001%2FVideo-Editor)
+[![NuGet version](https://badge.fury.io/nu/Video-Editor@2x.png)](https://badge.fury.io/nu/Video-Editor)
+[![GitHub version](https://badge.fury.io/gh/GitUser0001%2FVideo-Editor@2x.png)](https://badge.fury.io/gh/GitUser0001%2FVideo-Editor)
