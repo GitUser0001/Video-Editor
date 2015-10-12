@@ -7,15 +7,16 @@
 
 
 
-#define Dir "..\Bin\VideoEditor\Release"
+#define Dir "..\Bin\VideoEditor\Release\"
 #define Path "..\Bin\VideoEditor\Release\VideoEditor.exe"
 #define PathToNet "D:\GitHub\InstallationScripts\"
 #define Name GetStringFileInfo(Path, "ProductName")
-#define Publisher GetStringFileInfo(Path, "CompanyName")
+;#define Publisher GetStringFileInfo(Path, "CompanyName")
+#define Publisher "Dan Shcherbak"
 #define ExeName Name + ".exe" 
 #define AppVersion GetFileVersion(Path)
 #define URL "https://github.com/GitUser0001"
-#define GUID "F829E35A-E5AB-4ACB-8A32-3DA72881CBBF"
+#define GUID "2898BFE2-7402-4E43-9744-E5A220EF34BA"
 
 
 
@@ -23,19 +24,19 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{2898BFE2-7402-4E43-9744-E5A220EF34BA}
+AppId={#GUID}
 AppName={#MyAppName}
 AppVersion={#AppVersion}
 VersionInfoVersion={#AppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
+AppPublisher={#Publisher}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-OutputDir=C:\Users\STDY\Desktop\Temp
-OutputBaseFilename=Video-Editor Setup
+OutputDir=..\Bin
+OutputBaseFilename=setup
 Compression=lzma
 SolidCompression=yes
-AppPublisher={#Publisher}
 AppPublisherURL={#URL}
 AppSupportURL={#URL}
 AppUpdatesURL={#URL}
@@ -50,8 +51,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "C:\Users\STDY\Source\Repos\Video-Editor\Bin\VideoEditor\Release\VideoEditor.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#Path}"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "{#Dir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -65,127 +67,64 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 
 [Code]
 /////////////////////////////////////////////////////////////////////
-function GetUninstallString(): String;
+function isDotNetDetected(): Boolean;
 var
-  sUnInstPath: String;
+  reg_key: string;
+  key_value: cardinal;
+  sub_key: string;
+  success: boolean;
+begin
+  reg_key := 'SOFTWARE\Microsoft\NET Framework Setup\NDP\';
+  sub_key := 'v4\Full';
+  reg_key := reg_key + sub_key;
+  success := RegQueryDWordValue(HKLM, reg_key, 'Install', key_value);
+  success := success and (key_value = 1);
+  result := success;
+end;
+
+function GetUninstallString: string;
+var
+  sUnInstPath: string;
   sUnInstallString: String;
 begin
-  sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
+  Result := '';
+  sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\{#GUID}_is1'); //Your App GUID/ID
   sUnInstallString := '';
   if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
     RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
   Result := sUnInstallString;
 end;
 
-
-/////////////////////////////////////////////////////////////////////
-function IsUpgrade(): Boolean;
+function IsUpgrade: Boolean;
 begin
   Result := (GetUninstallString() <> '');
 end;
 
-
-/////////////////////////////////////////////////////////////////////
-function UnInstallOldVersion(): Integer;
+function InitializeSetup(): boolean;
 var
-  sUnInstallString: String;
+  V: Integer;
   iResultCode: Integer;
+  sUnInstallString: string;
 begin
-// Return Values:
-// 1 - uninstall string is empty
-// 2 - error executing the UnInstallString
-// 3 - successfully executed the UnInstallString
-
-  // default return value
-  Result := 0;
-
-  // get the uninstall string of the old app
-  sUnInstallString := GetUninstallString();
-  if sUnInstallString <> '' then begin
-    sUnInstallString := RemoveQuotes(sUnInstallString);
-    if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
-      Result := 3
-    else
-      Result := 2;
-  end else
-    Result := 1;
-end;
-
-/////////////////////////////////////////////////////////////////////
-procedure CurStepChanged(CurStep: TSetupStep);
-begin
-  if (CurStep=ssInstall) then
+  Result := True; // in case when no previous version is found
+  if RegValueExists(HKEY_LOCAL_MACHINE,'Software\Microsoft\Windows\CurrentVersion\Uninstall\{#GUID}_is1', 'UninstallString') then  //Your App GUID/ID
   begin
-    if (IsUpgrade()) then
+    V := MsgBox(ExpandConstant('An old version of app was detected. Do you want to uninstall it?'), mbInformation, MB_YESNO); //Custom Message if App installed
+    if V = IDYES then
     begin
-      UnInstallOldVersion();
-    end;
+      sUnInstallString := GetUninstallString();
+      sUnInstallString :=  RemoveQuotes(sUnInstallString);
+      Exec(ExpandConstant(sUnInstallString), '', '', SW_SHOW, ewWaitUntilTerminated, iResultCode);
+      Result := True;
+    end
+    else
+      Result := False; //when older version present and not uninstalled
   end;
+  if not isDotNetDetected() then
+    begin
+      MsgBox('{#Name} requires Microsoft .NET Framework 4.0 Full Profile.'#13#13
+             'You can download it here: http://www.microsoft.com/en-us/download/details.aspx?id=17851', mbInformation, MB_OK);
+    end;   
+
+  result := true;
 end;
-
-
-
-//
-// Enumeration used to specify a .NET framework version 
-//
-type TDotNetFramework = (
-    DotNet_v11_4322,  // .NET Framework 1.1
-    DotNet_v20_50727, // .NET Framework 2.0
-    DotNet_v30,       // .NET Framework 3.0
-    DotNet_v35,       // .NET Framework 3.5
-    DotNet_v4_Client, // .NET Framework 4.0 Client Profile
-    DotNet_v4_Full,   // .NET Framework 4.0 Full Installation
-    DotNet_v45);      // .NET Framework 4.5
-
-//
-// Checks whether the specified .NET Framework version and service pack
-// is installed (See: http://www.kynosarges.de/DotNetVersion.html)
-//
-// Parameters:
-//   Version     - Required .NET Framework version
-//   ServicePack - Required service pack level (0: None, 1: SP1, 2: SP2 etc.)
-//
-function IsDotNetInstalled(Version: TDotNetFramework; ServicePack: cardinal): boolean;
-  var
-    KeyName      : string;
-    Check45      : boolean;
-    Success      : boolean;
-    InstallFlag  : cardinal; 
-    ReleaseVer   : cardinal;
-    ServiceCount : cardinal;
-  begin
-    // Registry path for the requested .NET Version
-    KeyName := 'SOFTWARE\Microsoft\NET Framework Setup\NDP\';
-
-    case Version of
-      DotNet_v11_4322:  KeyName := KeyName + 'v1.1.4322';
-      DotNet_v20_50727: KeyName := KeyName + 'v2.0.50727';
-      DotNet_v30:       KeyName := KeyName + 'v3.0';
-      DotNet_v35:       KeyName := KeyName + 'v3.5';
-      DotNet_v4_Client: KeyName := KeyName + 'v4\Client';
-      DotNet_v4_Full:   KeyName := KeyName + 'v4\Full';
-      DotNet_v45:       KeyName := KeyName + 'v4\Full';
-    end;
-
-    // .NET 3.0 uses "InstallSuccess" key in subkey Setup
-    if (Version = DotNet_v30) then
-      Success := RegQueryDWordValue(HKLM, KeyName + '\Setup', 'InstallSuccess', InstallFlag) else
-      Success := RegQueryDWordValue(HKLM, KeyName, 'Install', InstallFlag);
-
-    // .NET 4.0/4.5 uses "Servicing" key instead of "SP"
-    if (Version = DotNet_v4_Client) or
-       (Version = DotNet_v4_Full) or
-       (Version = DotNet_v45) then
-      Success := Success and RegQueryDWordValue(HKLM, KeyName, 'Servicing', ServiceCount) else
-      Success := Success and RegQueryDWordValue(HKLM, KeyName, 'SP', ServiceCount);
-
-    // .NET 4.5 is distinguished from .NET 4.0 by the Release key
-    if (Version = DotNet_v45) then
-      begin
-        Success := Success and RegQueryDWordValue(HKLM, KeyName, 'Release', ReleaseVer);
-        Success := Success and (ReleaseVer >= 378389);
-      end;
-    
-
-    Result := Success and (InstallFlag = 1) and (ServiceCount >= ServicePack);
-  end;
