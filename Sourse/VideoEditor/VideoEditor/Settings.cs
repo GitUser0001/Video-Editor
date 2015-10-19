@@ -16,6 +16,8 @@ namespace VideoEditor
         private static readonly object _lock = new object();
         private static Settings _instance;
         private bool _disposed = false;
+        //private int _fontSize;
+        private FormatVideo _formatVideo;
 
         private Settings()
         {
@@ -27,6 +29,14 @@ namespace VideoEditor
         }
 
         public int FontSize { get; set; }
+
+        public FormatAudio FormatAudio { get; set; }
+
+        public FormatVideo FormatVideo
+        {
+            get { return _formatVideo; }
+            set { _formatVideo = value; }
+        }
 
         public static Settings GetInstance()
         {
@@ -56,6 +66,7 @@ namespace VideoEditor
         // Dispose() calls Dispose(true)
         public void Dispose()
         {
+            // lock dispose?
             Dispose(true);
             GC.SuppressFinalize(this);
         }
