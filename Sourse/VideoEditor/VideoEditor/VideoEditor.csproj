@@ -66,10 +66,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AAC.cs" />
-    <Compile Include="Convertor.cs" />
     <Compile Include="Format.cs" />
-    <Compile Include="MP4.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -36,10 +36,10 @@ namespace VideoEditor
         {
             //int f = Settings.GetInstance().FontSize;
             //MessageBox.Show(String.Format("{0}", f));
-            Convertor mp4 = new MP4();
-            Convertor mp3 = new MP3();
+            //Convertor mp4 = new MP4();
+            //Convertor mp3 = new MP3();
 
-            mp4.Successor = mp3;
+            //mp4.Successor = mp3;
         }
     }
 }
