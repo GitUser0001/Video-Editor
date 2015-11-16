@@ -9,11 +9,11 @@ namespace VideoEditor
     // i have to off CA 1704 identifiers should be spelled correctly
      public enum FormatVideo
      {
-         MPFour, Avi, Mkv
+         mp4, avi, mkv
      }
 
      public enum FormatAudio
      {
-         MPThree, Wma, Aac
+         mp3, wma, aac
      }
 }

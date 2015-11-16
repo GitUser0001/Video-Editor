@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace VideoEditor
 {
@@ -23,11 +25,13 @@ namespace VideoEditor
     public partial class MainWindow : Window
     {
         private bool fullscreen = false;
+        private VideoFilesInfo videoFiles;
 
         public MainWindow()
         {
             InitializeComponent();
             Settings.GetInstance();
+            videoFiles = new VideoFilesInfo(this);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -35,7 +39,7 @@ namespace VideoEditor
             Settings.GetInstance().Dispose();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image files (*.mkv;*.avi;*.mp4)|*.mkv;*.avi;*.mp4|All files (*.*)|*.*";
@@ -44,19 +48,12 @@ namespace VideoEditor
 
             if (openFileDialog.ShowDialog() == true)
             {
-                foreach (string filename in openFileDialog.FileNames)
+                foreach (string file in openFileDialog.FileNames)
                 {
-                    listVideoNames.Items.Add(System.IO.Path.GetFileNameWithoutExtension(filename));
-                    listVideoPaths.Items.Add(System.IO.Path.GetFullPath(filename));
-                    listVideoNames.SelectedIndex = listVideoNames.SelectedIndex = openFileDialog.FileNames.Length - 1;
-                    //media.Source = (String as System.Uri)System.IO.Path.GetFullPath(filename);
+                    //string fileName = System.IO.Path.GetFileNameWithoutExtension(file);
+                    //listVideoNames.Items.Add(fileName);
+                    videoFiles.AddVideo(System.IO.Path.GetFullPath(file));
                 }
-
-                PlaySelectedVideo(listVideoNames,null);
-                //MediaElement me = new MediaElement();
-                //me.Source = new System.Uri(listVideoPaths.Items[0].ToString());
-                //media.Source = new System.Uri(listVideoPaths.Items[0].ToString());
-                //media.Play();
             }
         }
 
@@ -77,7 +74,24 @@ namespace VideoEditor
 
         private void PlaySelectedVideo(object sender, MouseButtonEventArgs e)
         {
-            media.Source = new Uri(listVideoPaths.Items[(sender as ListView).SelectedIndex].ToString());
+            string videoName = (sender as ListView).SelectedItem.ToString();
+            media.Source = videoFiles.GetVideoUri(videoName);
+            media.Play();
+        }
+
+        private void MediaOpened(object sender, System.Windows.RoutedEventArgs e)
+        {
+            sliProgress.Maximum = (int)media.NaturalDuration.TimeSpan.TotalSeconds;
+        }
+
+        private void SliProgressDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            media.Position = TimeSpan.FromSeconds(sliProgress.Value);
+        }
+
+        private void SliProgressValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            txtProgressStatus.Text = TimeSpan.FromSeconds(sliProgress.Value).ToString(@"hh\:mm\:ss");
         }
 
         private void CmdSetFullScreen(object sender, RoutedEventArgs e)
