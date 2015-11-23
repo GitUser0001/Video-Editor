@@ -26,7 +26,7 @@ namespace VideoEditor
     {
         private bool fullscreen = false;
         private VideoFilesInfo videoFiles;
-
+// motion jpeg
         public MainWindow()
         {
             InitializeComponent();
